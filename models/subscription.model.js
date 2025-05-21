@@ -30,7 +30,7 @@ const subscriptionSchema = new mongoose.Schema({
 
     category: {
         type: String,
-        enum: ["sports", "news", "entertaiment", "lifestyle", "technology", "finance", "politics", "others"],
+        enum: ["sports", "news", "entertainment", "lifestyle", "technology", "finance", "politics", "others"],
         required: [true, "Frequency is required"],
     },
 
