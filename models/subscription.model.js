@@ -77,7 +77,7 @@ const subscriptionSchema = new mongoose.Schema({
 });
 
 // Autocalculate renewal date if missing
-subscriptionSchema.index('save', function ( next ) {
+subscriptionSchema.pre('save', function ( next ) {
 
     if ( !this.renewalDate) {
         const renewalPeriods = {

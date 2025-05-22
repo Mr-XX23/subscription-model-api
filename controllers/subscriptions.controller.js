@@ -1,3 +1,4 @@
+import { workflowClient } from '../config/uptash.js';
 import Subscription from '../models/subscription.model.js';
 
 
@@ -7,6 +8,10 @@ export const createSubcription = async (req, res, next) => {
         ...req.body,
         user: req.user._id,
     });
+
+    await workflowClient.trigger({
+        
+    })
 
     res.status(201).json({
         status: true,
