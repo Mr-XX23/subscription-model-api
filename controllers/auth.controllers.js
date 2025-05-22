@@ -4,6 +4,7 @@ import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET, JWT_EXPIRES_IN } from "../config/env.js";
+import BlacklistModel from "../models/blacklist.model.js";
 
 export const signUp = async (req, res, next) => {
   const session = await mongoose.startSession();
@@ -98,14 +99,32 @@ export const signIn = async (req, res, next) => {
       data: {
         token,
         user,
-      }, 
+      },
     });
-
   } catch (error) {
     next(error);
   }
 };
 
-export const signOut = async (req, res) => {
-   
+export const signOut = async (req, res, next) => {
+  try {
+
+    let token = req.token;
+    if (!token) return res.sendStatus(204);
+
+    const checkIfBlacklisted = await BlacklistModel.findOne({ token: token });
+
+    if (checkIfBlacklisted) return res.sendStatus(204);
+
+    const newBlacklist = await BlacklistModel.create({ token: token });
+
+    res.setHeader("Clear-Site-Data", '"cookies"');
+
+    res.status(200).json({ message: "You are logged out!" });
+
+  } catch (error) {
+
+    next(error);
+    
+  }
 };
