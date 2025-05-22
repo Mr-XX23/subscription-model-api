@@ -114,9 +114,15 @@ export const signOut = async (req, res, next) => {
 
     const checkIfBlacklisted = await BlacklistModel.findOne({ token: token });
 
-    if (checkIfBlacklisted) return res.sendStatus(204);
+    if (checkIfBlacklisted) return res.sendStatus(401).json({ message: "Invalid User data" });
 
-    const newBlacklist = await BlacklistModel.create({ token: token });
+    const newBlacklist = await BlacklistModel.create([ { token, user: req.user._id}]);
+
+    if (!newBlacklist) {
+      const error = new Error("Error signing out");
+      error.statusCode = 500;
+      throw error;
+    }
 
     res.setHeader("Clear-Site-Data", '"cookies"');
 
@@ -125,6 +131,6 @@ export const signOut = async (req, res, next) => {
   } catch (error) {
 
     next(error);
-    
+
   }
 };

@@ -7,6 +7,11 @@ const BlacklistSchema = new mongoose.Schema(
             type : String,
             required: [true, "Token is required"],
             ref : "User",
+        },
+        user: {
+            type : mongoose.Schema.Types.ObjectId,
+            required: [true, "User is required"],
+            ref : "User",
         }, 
     }, 
     {

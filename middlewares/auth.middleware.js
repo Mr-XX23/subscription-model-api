@@ -1,6 +1,7 @@
 
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
+import blacklistModel from "../models/blacklist.model.js";
 
 const authorize = async (req, res, next) => {
   try {
@@ -14,6 +15,19 @@ const authorize = async (req, res, next) => {
       return res.status(401).json({
         message: "Unauthorized",
         error: "No token provided",
+      });
+    }
+
+    const checkIfBlacklisted = await blacklistModel.findOne(
+      {
+        token: token,
+      },
+    )
+
+    if (checkIfBlacklisted) {
+      return res.status(401).json({
+        message: "Unauthorized",
+        error: "Please login again",
       });
     }
 
