@@ -3,8 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "app.js",
   "scripts": {
-    "server": "node --watch app.js"
+    "server": "node --watch app.js",
+    "lint": "eslint . --ext .js,.mjs,.cjs",
+    "lint:fix": "eslint . --ext .js,.mjs,.cjs --fix",
+    "start:prod": "node --watch app.js",
+    "start:prod:debug": "DEBUG=app:* node --watch app.js",
+    "start:prod:inspect": "node --inspect=0.0.0:9229 --watch app.js",
+    "start:prod:inspect-brk": "node --inspect-brk=0.0.0:9229 --watch app.js",
+    "start:prod:inspect-debug": "DEBUG=app:* node --inspect=0.0.0:9229 --watch app.js",
+    "start:prod:inspect-brk-debug": "DEBUG=app:* node --inspect-brk=0.0.0:9229 --watch app.js"
   },
   "dependencies": {
     "@arcjet/inspect": "^1.0.0-beta.7",
